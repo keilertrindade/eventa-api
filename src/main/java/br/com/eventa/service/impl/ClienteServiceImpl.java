@@ -48,7 +48,6 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void inserir(Cliente cliente) {
-
 		salvarClienteComCep(cliente);
     }
 

@@ -22,20 +22,30 @@ public class Avaliacao {
 
     @ManyToOne
     private Usuario usuario;
-    @ManyToOne
-    private Evento evento;
+
+    //Atributo usado para verificar se o avaliado é um Evento ou um Local
+    private String tipo_avaliado;
+
+    //Atributo usado para validar o id do avaliado, e realizar o relacionamento especifico através da services
+    private Long id_avaliado;
 
     public Avaliacao() {
     }
 
-    public Avaliacao(Long avaliacao_id, String titulo, String descricao, Date data_criacao, int nota, Usuario usuario, Evento evento) {
-        this.avaliacao_id = avaliacao_id;
-        this.titulo = titulo;
-        this.descricao = descricao;
-        this.data_criacao = data_criacao;
-        this.nota = nota;
-        this.usuario = usuario;
-        this.evento = evento;
+    public String getTipo_avaliado() {
+        return tipo_avaliado;
+    }
+
+    public void setTipo_avaliado(String tipo_avaliado) {
+        this.tipo_avaliado = tipo_avaliado;
+    }
+
+    public Long getId_avaliado() {
+        return id_avaliado;
+    }
+
+    public void setId_avaliado(Long id_avaliado) {
+        this.id_avaliado = id_avaliado;
     }
 
     public Long getAvaliacao_id() {
@@ -86,11 +96,5 @@ public class Avaliacao {
         this.usuario = usuario;
     }
 
-    public Evento getEvento() {
-        return evento;
-    }
 
-    public void setEvento(Evento evento) {
-        this.evento = evento;
-    }
 }

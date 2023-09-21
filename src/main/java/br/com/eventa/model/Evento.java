@@ -31,25 +31,22 @@ public class Evento {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataFinal;
 
-    public Evento() {
-    }
-
-    public Evento(Long id, Usuario responsavel, String nome, String descricao, Local local, String linkImagemEvento, Date dataInicio, Date dataFinal, String diasExibicao, Time horarioSessaoPrincipal) {
-        this.id = id;
-        this.responsavel = responsavel;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.local = local;
-        this.linkImagemEvento = linkImagemEvento;
-        this.dataInicio = dataInicio;
-        this.dataFinal = dataFinal;
-        this.diasExibicao = diasExibicao;
-        this.horarioSessaoPrincipal = horarioSessaoPrincipal;
-    }
+    private String categoria;
 
     private String diasExibicao;
 
     private Time horarioSessaoPrincipal;
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public Evento() {
+    }
 
     public Long getId() {
         return id;

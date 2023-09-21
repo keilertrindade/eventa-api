@@ -1,10 +1,13 @@
 package br.com.eventa.service.impl;
 
+import br.com.eventa.model.Endereco;
 import br.com.eventa.model.Local;
+import br.com.eventa.model.Usuario;
 import br.com.eventa.repository.EnderecoRepository;
 import br.com.eventa.repository.LocalRepository;
 import br.com.eventa.service.ClienteService;
 import br.com.eventa.service.LocalService;
+import br.com.eventa.service.ViaCepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +18,7 @@ import java.util.Optional;
  * injetada pelo Spring (via {@link Autowired}). Com isso, como essa classe é um
  * {@link Service}, ela será tratada como um <b>Singleton</b>.
  *
- * @author falvojr
+ * @author Keiler Trindade
  */
 @Service
 public class LocalServiceImpl implements LocalService {
@@ -26,12 +29,15 @@ public class LocalServiceImpl implements LocalService {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
+    @Autowired
+    private ViaCepService viaCepService;
+
     // Strategy: Implementar os métodos definidos na interface.
     // Facade: Abstrair integrações com subsistemas, provendo uma interface simples.
 
     @Override
     public Iterable<Local> buscarTodos() {
-        // Buscar todos os Clientes.
+        // Buscar todos os locais.
         return localRepository.findAll();
     }
 
@@ -44,8 +50,8 @@ public class LocalServiceImpl implements LocalService {
 
     @Override
     public void inserir(Local local) {
-        localRepository.save(local);
-
+        //localRepository.save(local);
+        salvarLocalComCep(local);
     }
 
     @Override
@@ -61,6 +67,17 @@ public class LocalServiceImpl implements LocalService {
     public void deletar(Long id) {
         // Deletar Cliente por ID.
         localRepository.deleteById(id);
+    }
+
+    private void salvarLocalComCep(Local local) {
+        String cep = local.getEndereco().getCep();
+        Endereco endereco = enderecoRepository.findById(cep).orElseGet(() -> {
+            Endereco novoEndereco = viaCepService.consultarCep(cep);
+            enderecoRepository.save(novoEndereco);
+            return novoEndereco;
+        });
+        local.setEndereco(endereco);
+        localRepository.save(local);
     }
 
 }

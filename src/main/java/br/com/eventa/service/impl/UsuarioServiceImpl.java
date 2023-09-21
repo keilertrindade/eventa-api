@@ -1,11 +1,13 @@
 package br.com.eventa.service.impl;
 
 import br.com.eventa.model.Cliente;
+import br.com.eventa.model.Endereco;
 import br.com.eventa.model.Usuario;
 import br.com.eventa.repository.EnderecoRepository;
 import br.com.eventa.repository.UsuarioRepository;
 import br.com.eventa.service.ClienteService;
 import br.com.eventa.service.UsuarioService;
+import br.com.eventa.service.ViaCepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,7 @@ import java.util.Optional;
  * injetada pelo Spring (via {@link Autowired}). Com isso, como essa classe é um
  * {@link Service}, ela será tratada como um <b>Singleton</b>.
  *
- * @author falvojr
+ * @author Keiler Trindade
  */
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -26,6 +28,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private EnderecoRepository enderecoRepository;
+    @Autowired
+    private ViaCepService viaCepService;
 
     // Strategy: Implementar os métodos definidos na interface.
     // Facade: Abstrair integrações com subsistemas, provendo uma interface simples.
@@ -45,7 +49,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public void inserir(Usuario usuario) {
-            usuarioRepository.save(usuario);
+        //usuarioRepository.save(usuario);
+        salvarUsuarioComCep(usuario);
     }
 
     @Override
@@ -63,18 +68,18 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
-    private void salvarClienteComCep(Cliente cliente) {
-        /* Verificar se o Endereco do Cliente já existe (pelo CEP).
-        String cep = cliente.getEndereco().getCep();
+    private void salvarUsuarioComCep(Usuario usuario) {
+        // Verificar se o Endereco do Cliente já existe (pelo CEP).
+        String cep = usuario.getEndereco().getCep();
         Endereco endereco = enderecoRepository.findById(cep).orElseGet(() -> {
             // Caso não exista, integrar com o ViaCEP e persistir o retorno.
             Endereco novoEndereco = viaCepService.consultarCep(cep);
             enderecoRepository.save(novoEndereco);
             return novoEndereco;
         });
-        cliente.setEndereco(endereco);
+        usuario.setEndereco(endereco);
         // Inserir Cliente, vinculando o Endereco (novo ou existente).
-        clienteRepository.save(cliente); */
+        usuarioRepository.save(usuario);
     }
 
 }

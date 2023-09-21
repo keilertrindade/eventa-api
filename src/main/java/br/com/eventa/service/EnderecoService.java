@@ -7,7 +7,7 @@ import br.com.eventa.model.Endereco;
  * isso, se necessário, podemos ter multiplas implementações dessa mesma
  * interface.
  * 
- * @author falvojr
+ * @author Keiler Trindade
  */
 public interface EnderecoService {
 
